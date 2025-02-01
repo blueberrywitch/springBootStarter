@@ -84,13 +84,11 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                    <!-- Удалите это, если skip не нужен -->
                     <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 
 
 </project>
