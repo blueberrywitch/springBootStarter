@@ -18,9 +18,9 @@ public class IncomeClient {
 
     public <T> List<T> getData(ParameterizedTypeReference<List<T>> typeReference, String baseUrl) {
         return restTemplate.exchange(
-                baseUrl, HttpMethod.GET,
-                null,
-                typeReference)
+                        baseUrl, HttpMethod.GET,
+                        null,
+                        typeReference)
                 .getBody();
     }
 
