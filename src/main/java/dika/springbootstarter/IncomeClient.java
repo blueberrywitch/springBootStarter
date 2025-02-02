@@ -1,14 +1,15 @@
 package dika.springbootstarter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 public class IncomeClient {
 
-    private static final Logger log = LoggerFactory.getLogger(IncomeClient.class);
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -18,24 +19,23 @@ public class IncomeClient {
 
     public int getData(String baseUrl, Long userId) {
 
-        String responseBody = restTemplate.getForEntity(baseUrl, String.class).getBody();
-
-        if (responseBody != null && responseBody.contains("\"id\":" + userId.toString() + ",")) {
-            try {
-
-                int salaryIndex = responseBody.indexOf("\"income\":", responseBody.indexOf("\"id\":" + userId.toString() + ","));
-                if (salaryIndex != -1) {
-
-                    String salaryStr = responseBody.substring(salaryIndex + 9).split("}")[0];
-                    return Integer.parseInt(salaryStr);
+        ResponseEntity<List<UserDTO>> response = restTemplate.exchange(
+                baseUrl,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<UserDTO>>() {
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+        );
+
+        List<UserDTO> list = response.getBody();
+        for (UserDTO userDTO : list) {
+            if (userDTO.getId() == (userId)) {
+                if (userDTO.getIncome() != null) {
+                    return userDTO.getIncome().intValue();
+                }
             }
         }
-
         return 0;
     }
-
 }
 
