@@ -5,6 +5,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -19,8 +20,12 @@ public class IncomeClient {
 
     public int getData(String baseUrl, Long userId) {
 
+        String url = UriComponentsBuilder.fromHttpUrl(baseUrl)
+                .queryParam("id", userId)
+                .toUriString();
+
         ResponseEntity<List<UserDTO>> response = restTemplate.exchange(
-                baseUrl,
+                url,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<UserDTO>>() {
