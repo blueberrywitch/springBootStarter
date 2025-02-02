@@ -18,10 +18,7 @@ public class IncomeClient {
 
     public int getData(String baseUrl, Long userId) {
 
-        ResponseEntity<String> response = restTemplate.getForEntity(baseUrl, String.class);
-        String responseBody = response.getBody();
-        log.info("Response body: " + responseBody);
-        log.info("User id: " + userId.toString());
+        String responseBody = restTemplate.getForEntity(baseUrl, String.class).getBody();
 
         if (responseBody != null && responseBody.contains("\"id\":" + userId.toString() + ",")) {
             try {
